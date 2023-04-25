@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,5 +36,15 @@ public class UserController {
         }
         service.save(joinForm);
         return "redirect:/user/login"; // 회원가입 완료 후 --> 로그인 이동
+    }
+
+    @GetMapping("/login")
+    public String login(@CookieValue(required = false) String saveId, Model model) {
+        // saveId 쿠키
+        if(saveId != null) {
+            model.addAttribute("userId", saveId);
+            model.addAttribute("saveId", saveId);
+        }
+        return "user/login";
     }
 }
